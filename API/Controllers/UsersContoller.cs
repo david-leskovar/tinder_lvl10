@@ -20,6 +20,9 @@ namespace Tinder_lvl10.Controllers
 
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers() {
 
+
+            AppUser appUser = new AppUser { Username = "deyf", Id = Guid.NewGuid() };
+
             var query  = _context.Users.ToListAsync();
            
             return Ok(await query);
