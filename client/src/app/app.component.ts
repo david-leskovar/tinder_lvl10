@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { AuthService } from './Services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,13 +8,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  constructor(private http: HttpClient) {}
-  title = 'client';
-  onFetch() {
-    this.http
-      .get('https://localhost:7195/api/UsersContoller')
-      .subscribe((data) => {
-        console.log(data);
-      });
+  constructor(private http: HttpClient, private authService: AuthService) {}
+
+  ngOnInit() {
+    this.authService.onAutoLogin();
   }
+
+  title = 'client';
 }

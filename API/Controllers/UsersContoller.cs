@@ -15,7 +15,7 @@ namespace Tinder_lvl10.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        
 
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers() {
 
@@ -28,7 +28,7 @@ namespace Tinder_lvl10.Controllers
             return Ok(await query);
         }
 
-        [Authorize]
+       
         [HttpGet("{id}")]
 
         public async Task<ActionResult<AppUser>> GetUser(Guid id)

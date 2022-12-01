@@ -1,5 +1,6 @@
 ﻿using API.DTOs;
 using API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -9,6 +10,8 @@ using Tinder_lvl10.Entities;
 
 namespace API.Controllers
 {
+
+    [AllowAnonymous]
     public class AccountsController : BaseApiController
     {
 
@@ -19,6 +22,7 @@ namespace API.Controllers
         }
 
         [HttpPost("login")]
+        
         public async Task<ActionResult<UserDTO>> Login(RegisterDTO loginRequest) {
 
             if (!ModelState.IsValid) { 
