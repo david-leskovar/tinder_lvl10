@@ -1,10 +1,34 @@
-using Tinder_lvl10.Data;
+ using Tinder_lvl10.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using API.Services;
+using API.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+Console.WriteLine(builder.Configuration["TokenKey"]);
+
+//Middleware
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
+
+
+    options.TokenValidationParameters = new TokenValidationParameters {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey"])),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+    };
+
+});
+
+
+
 
 
 builder.Services.AddControllers();
@@ -23,6 +47,9 @@ builder.Services.AddCors(opt =>
 
 });
 
+builder.Services.AddScoped<ITokenService,TokenService>();
+
+
 
 var app = builder.Build();
 
@@ -40,6 +67,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

@@ -1,25 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using API.Controllers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tinder_lvl10.Data;
 using Tinder_lvl10.Entities;
 
 namespace Tinder_lvl10.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersContoller : ControllerBase
+    
+    public class Users : BaseApiController
     {
-        private readonly DataContext _context;
-        public UsersContoller(DataContext context) {
-        
-            this._context = context;
-
+        public Users(DataContext context) : base(context)
+        {
         }
 
         [HttpGet]
+        [AllowAnonymous]
 
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers() {
 
+            
 
             AppUser appUser = new AppUser { Username = "deyf", Id = Guid.NewGuid() };
 
@@ -28,6 +28,7 @@ namespace Tinder_lvl10.Controllers
             return Ok(await query);
         }
 
+        [Authorize]
         [HttpGet("{id}")]
 
         public async Task<ActionResult<AppUser>> GetUser(Guid id)
