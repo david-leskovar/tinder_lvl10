@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { delay } from 'rxjs';
 import { AuthService } from '../Services/auth.service';
 import { User } from '../Services/auth.service';
 
@@ -9,7 +11,19 @@ import { User } from '../Services/auth.service';
   styleUrls: ['./nav.component.css'],
 })
 export class NavComponent implements OnInit {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private toastr: ToastrService
+  ) {}
+
+  mobileOpen: boolean = false;
+  openForMobile() {
+    if (this.mobileOpen) {
+      this.mobileOpen = false;
+    } else {
+      this.mobileOpen = true;
+    }
+  }
 
   error: string = '';
   signInLoading: boolean = false;
@@ -40,15 +54,16 @@ export class NavComponent implements OnInit {
         username: form.value.username,
         password: form.value.password,
       })
+
       .subscribe(
         (data) => {
           this.signInLoading = false;
         },
         (error) => {
-          console.log(error);
-          this.error = error.error;
-          console.log(this.error);
-          this.signInLoading = false;
+          setTimeout(() => {
+            this.toastr.error(error.error);
+            this.signInLoading = false;
+          }, 1500);
         }
       );
   }

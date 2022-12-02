@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { from } from 'rxjs';
 import { AuthService } from '../Services/auth.service';
 
@@ -10,7 +11,11 @@ import { AuthService } from '../Services/auth.service';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   loading: boolean = false;
 
@@ -41,6 +46,7 @@ export class RegisterComponent implements OnInit {
         (error) => {
           console.log(error);
 
+          this.toastr.error('Hello bozo, there was an error!');
           this.loading = false;
         }
       );

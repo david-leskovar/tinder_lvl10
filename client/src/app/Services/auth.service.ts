@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Token } from '@angular/compiler';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { catchError, delay, Subject, tap, throwError } from 'rxjs';
 
 export interface UserLogin {
@@ -15,7 +16,7 @@ export interface User {
 
 @Injectable()
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   currentUser: User | null = null;
 
@@ -63,5 +64,6 @@ export class AuthService {
     localStorage.removeItem('user');
     this.currentUser = null;
     this.userChanged.next(null);
+    this.router.navigate(['']);
   }
 }
