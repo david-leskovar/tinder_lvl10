@@ -6,6 +6,7 @@ using API.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Middleware.Example;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,23 +57,36 @@ var app = builder.Build();
 
 
 
-
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
+    
     app.UseSwaggerUI();
-    app.UseCors("CorsPolicy");
+    app.UseExceptionHandler("/error-development");
+
+
+
 }
 
+app.UseMiddleware<RequestCultureMiddleware>();
+
 app.UseHttpsRedirection();
+
+
+app.UseRouting();
+
+app.UseCors("CorsPolicy");
 
 
 app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapControllers().RequireAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers().RequireAuthorization();
+});
+
 
 app.Run();

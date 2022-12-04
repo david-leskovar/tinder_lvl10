@@ -7,10 +7,12 @@ namespace API.DTOs
     {
         [Required]
         [MinLength(5)]
+        [MaxLength(15)]
         public string? username { get; set; }
 
         [Required]
         [MinLength(5)]
+        [MaxLength(15)] 
 
         public string? password { get; set; }
      

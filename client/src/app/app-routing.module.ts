@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ErrorsComponent } from './errors/errors.component';
+import { NotFoundComponent } from './errors/not-found/not-found.component';
+import { ServererrorComponent } from './errors/servererror/servererror.component';
 import { AuthGuard } from './guards/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { ListsComponent } from './lists/lists.component';
@@ -19,6 +22,10 @@ const routes: Routes = [
   },
   { path: 'lists', component: ListsComponent, canActivate: [AuthGuard] },
   { path: 'messages', component: MessagesComponent, canActivate: [AuthGuard] },
+  { path: 'errors', component: ErrorsComponent },
+  { path: 'server-error', component: ServererrorComponent },
+  { path: 'not-found', component: NotFoundComponent },
+
   { path: '**', redirectTo: '' },
 ];
 

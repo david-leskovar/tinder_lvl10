@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
@@ -16,6 +16,10 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { AuthGuard } from './guards/auth.guard';
+import { ErrorsComponent } from './errors/errors.component';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { ServererrorComponent } from './errors/servererror/servererror.component';
+import { NotFoundComponent } from './errors/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +31,9 @@ import { AuthGuard } from './guards/auth.guard';
     MemberDetailComponent,
     ListsComponent,
     MessagesComponent,
+    ErrorsComponent,
+    ServererrorComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,7 +44,11 @@ import { AuthGuard } from './guards/auth.guard';
     FormsModule,
     ToastrModule.forRoot({ positionClass: 'toast-bottom-right' }),
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [
+    AuthService,
+    AuthGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
