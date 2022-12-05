@@ -8,10 +8,11 @@ namespace API.Controllers
     public class BaseApiController : ControllerBase
     {
 
-        protected readonly DataContext _context;
-        public BaseApiController(DataContext context)
-        {
+        protected DataContext _context;
+        public BaseApiController(DataContext context) {
+
             this._context = context;
         }
+       
     }
 }

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Middleware.Example;
+using API.Data;
+using API.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,10 +51,13 @@ builder.Services.AddCors(opt =>
 });
 
 builder.Services.AddScoped<ITokenService,TokenService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
 
 
 var app = builder.Build();
+
 
 
 

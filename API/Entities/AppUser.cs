@@ -1,19 +1,72 @@
-﻿namespace Tinder_lvl10.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Tinder_lvl10.Entities
+
+
 {
+    [Table("Photos")]
+    public class Photo { 
+    
+        public int Id { get; set; }
+        public string? Url { get; set; }
+        public bool IsMain { get; set; }
+        public string? PublicId { get; set; }
+
+        public AppUser AppUser { get; set; }
+
+        public Guid AppUserId { get; set; }
+
+      
+
+    }
+
+
+    
+
+
     public class AppUser
     {
         public Guid Id { get; set; }
 
-        public string? Username { get; set;}
+        public string? Username { get; set; }
 
         public byte[]? PasswordHash { get; set; }
 
         public byte[]? PasswordSalt { get; set; }
 
-   
+        public DateTime DateOfBirth { get; set; }
 
+        public string? KnownAs { get; set; }
+
+        public DateTime Created { get; set; } = DateTime.Now;
+
+        public DateTime LastActive { get; set; } = DateTime.Now;
+        public string? Gender { get; set; }
+
+        public string? Introduction { get; set; }
+
+        public string? LookingFor { get; set; }
+
+        public string? Interests { get; set; }
+
+        public string? City { get; set; }
+
+        public string? Country { get; set; }
+
+        public ICollection<Photo>? Photos {get;set;}
         
+        
+        /*public int GetAge() {
 
-         
+            var today = DateTime.Today;
+            var age = today.Year - DateOfBirth.Year;
+            if (DateOfBirth.Date > today.AddYears(-age)) {
+                age--;
+            }
+            return age;
+
+        }
+        */
+
     }
 }
