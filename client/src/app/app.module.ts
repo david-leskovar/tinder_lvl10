@@ -20,6 +20,10 @@ import { ErrorsComponent } from './errors/errors.component';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { ServererrorComponent } from './errors/servererror/servererror.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
+import { MemberCardComponent } from './members/member-card/member-card.component';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 
 @NgModule({
   declarations: [
@@ -34,6 +38,7 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
     ErrorsComponent,
     ServererrorComponent,
     NotFoundComponent,
+    MemberCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,11 +48,14 @@ import { NotFoundComponent } from './errors/not-found/not-found.component';
     ReactiveFormsModule,
     FormsModule,
     ToastrModule.forRoot({ positionClass: 'toast-bottom-right' }),
+    TabsModule.forRoot(),
+    CarouselModule.forRoot(),
   ],
   providers: [
     AuthService,
     AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

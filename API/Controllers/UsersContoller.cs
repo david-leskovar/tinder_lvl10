@@ -37,16 +37,16 @@ namespace Tinder_lvl10.Controllers
 
             var user1 = new AppUser
             {
-                Username = "Lisa",
+                Username = "Maia",
                 Gender = "Female",
                 DateOfBirth = DateTime.Parse("1956-07-22"),
-                KnownAs = "Lisa",
+                KnownAs = "Maia",
                 Created = DateTime.Parse("2020-06-24"),
-                LastActive = DateTime.Parse("2020-06-21"),
-                Introduction = "Lisa introduction basic af",
+                LastActive = DateTime.Parse("2021-06-21"),
+                Introduction = "Maia im here hehe xd introduction basic af",
                 LookingFor = "The boys",
                 Interests = "Basic af interests",
-                City = "Maribor",
+                City = "Slovenj Gradec",
                 Country = "Slovenija",
                 Photos = new Photo[] { new Photo { Url = "https://randomuser.me/api/portraits/women/54.jpg", IsMain = true } },
                 PasswordSalt = hmac.Key,
@@ -55,16 +55,16 @@ namespace Tinder_lvl10.Controllers
 
             var user2 = new AppUser
             {
-                Username = "Karen",
+                Username = "Mia",
                 Gender = "Female",
                 DateOfBirth = DateTime.Parse("1995-10-12"),
-                KnownAs = "Karen",
+                KnownAs = "Mia",
                 Created = DateTime.Parse("2019-06-24"),
                 LastActive = DateTime.Parse("2020-04-23"),
-                Introduction = "Karen introduction basic af",
+                Introduction = "Mia ka daj introduction basic af",
                 LookingFor = "The boys",
                 Interests = "Basic af interests",
-                City = "Ljubljana",
+                City = "Novo mesto",
                 Country = "Slovenija",
                 Photos = new Photo[] { new Photo { Url = "https://randomuser.me/api/portraits/women/51.jpg", IsMain = true } },
                 PasswordSalt = hmac.Key,
@@ -73,27 +73,27 @@ namespace Tinder_lvl10.Controllers
 
             var user3 = new AppUser
             {
-                Username = "Kevin",
+                Username = "Marko",
                 Gender = "Male",
-                DateOfBirth = DateTime.Parse("1991-03-12"),
-                KnownAs = "Karen",
+                DateOfBirth = DateTime.Parse("1992-03-12"),
+                KnownAs = "Marko",
                 Created = DateTime.Parse("2019-06-24"),
                 LastActive = DateTime.Parse("2020-04-23"),
-                Introduction = "Kevin out here lesgoo",
+                Introduction = "Marko out here lesgoo",
                 LookingFor = "The girls",
                 Interests = "Basic af interests",
-                City = "Ljubljana",
+                City = "Domžale",
                 Country = "Slovenija",
                 Photos = new Photo[] { new Photo { Url = "https://randomuser.me/api/portraits/men/33.jpg", IsMain = true } },
                 PasswordSalt = hmac.Key,
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("Pa$$w0rd"))
             };
 
-            //_context.Users.Add(user1);
-            //_context.Users.Add(user2);
-            //_context.Users.Add(user3);
+            _context.Users.Add(user1);
+            _context.Users.Add(user2);
+            _context.Users.Add(user3);
 
-            //_context.SaveChanges();
+            _context.SaveChanges();
 
 
             return Ok("Done");
@@ -103,7 +103,7 @@ namespace Tinder_lvl10.Controllers
        
 
 
-        [AllowAnonymous]
+
         [HttpGet]
         
 
@@ -123,7 +123,6 @@ namespace Tinder_lvl10.Controllers
         }
 
 
-        [AllowAnonymous]
         [HttpGet("{username}")]
 
         public async Task<ActionResult<MemberDTO>> GetUser(string username)

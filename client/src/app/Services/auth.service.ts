@@ -3,6 +3,7 @@ import { Token } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, delay, Subject, tap, throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 export interface UserLogin {
   username: string;
@@ -17,6 +18,8 @@ export interface User {
 @Injectable()
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
+
+  baseUrl = environment.apiUrl;
 
   currentUser: User | null = null;
 
@@ -45,7 +48,7 @@ export class AuthService {
 
   login(user: UserLogin) {
     return this.http
-      .post<User>('https://localhost:5001/api/Accounts/login', user)
+      .post<User>(this.baseUrl + 'Accounts/login', user)
       .pipe(delay(1500))
 
       .pipe(
@@ -64,6 +67,6 @@ export class AuthService {
     localStorage.removeItem('user');
     this.currentUser = null;
     this.userChanged.next(null);
-    this.router.navigate(['']);
+    this.router.navigate(['/register']);
   }
 }
