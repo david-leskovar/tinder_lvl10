@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  NgForm,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { from } from 'rxjs';
@@ -17,10 +25,33 @@ export class RegisterComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
+  registerForm: FormGroup;
   loading: boolean = false;
 
-  onSubmit(form: NgForm) {
-    this.loading = true;
+  initializeForm() {
+    this.registerForm = new FormGroup({
+      username: new FormControl('', [
+        Validators.minLength(5),
+        Validators.maxLength(15),
+        Validators.required,
+      ]),
+      password: new FormControl('', [
+        Validators.minLength(5),
+        Validators.maxLength(15),
+        Validators.required,
+      ]),
+      confirmPassword: new FormControl('', [
+        Validators.minLength(5),
+        Validators.maxLength(15),
+        Validators.required,
+        this.mathValues('password'),
+      ]),
+    });
+  }
+
+  onSubmit() {
+    console.log(this.registerForm);
+    /*this.loading = true;
     let username = form.value.username;
     let password = form.value.password;
     this.authService
@@ -50,7 +81,18 @@ export class RegisterComponent implements OnInit {
           this.loading = false;
         }
       );
+      */
   }
 
-  ngOnInit(): void {}
+  mathValues(matchTo: any): ValidatorFn {
+    return (control: any) => {
+      return control?.value === control?.parent?.controls[matchTo].value
+        ? null
+        : { isMatching: true };
+    };
+  }
+
+  ngOnInit(): void {
+    this.initializeForm();
+  }
 }

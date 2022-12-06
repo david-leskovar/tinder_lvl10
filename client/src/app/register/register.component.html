@@ -4,8 +4,8 @@
       <span class="sr-only"></span>
     </div>
     <form
-      #authForm="ngForm"
-      (ngSubmit)="onSubmit(authForm)"
+      [formGroup]="registerForm"
+      (ngSubmit)="onSubmit()"
       autocomplete="off"
       *ngIf="!loading"
     >
@@ -13,25 +13,35 @@
 
       <div class="form-floating">
         <input
-          type="email"
-          ngModel
+          type="text"
+          formControlName="username"
           name="username"
           class="form-control"
-          id="floatingInput"
-          placeholder="name@example.com"
+          placeholder="Username"
         />
-        <label for="floatingInput">Email address</label>
+        <label for="floatingInput">Username</label>
       </div>
       <div class="form-floating">
         <input
-          ngModel
+          formControlName="password"
           name="password"
           type="password"
           class="form-control"
-          id="floatingPassword"
           placeholder="Password"
         />
+
         <label for="floatingPassword">Password</label>
+      </div>
+      <div class="form-floating">
+        <input
+          formControlName="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          class="form-control"
+          placeholder="Confirm Password"
+        />
+
+        <label for="floatingPassword">Confirm password</label>
       </div>
 
       <div class="checkbox mb-3">
@@ -46,3 +56,6 @@
     </form>
   </div>
 </div>
+
+<p>Form value:{{ registerForm.value | json }}</p>
+<p>Form status:{{ registerForm.status | json }}</p>

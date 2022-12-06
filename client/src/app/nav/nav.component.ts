@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { delay } from 'rxjs';
+import { Member } from '../models/member';
 import { AuthService } from '../Services/auth.service';
 import { User } from '../Services/auth.service';
+import { MembersService } from '../Services/members.service';
 
 @Component({
   selector: 'app-nav',
@@ -13,9 +15,11 @@ import { User } from '../Services/auth.service';
 export class NavComponent implements OnInit {
   constructor(
     private authService: AuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private memberService: MembersService
   ) {}
 
+  currentMember: Member | null = null;
   mobileOpen: boolean = false;
   openForMobile() {
     if (this.mobileOpen) {

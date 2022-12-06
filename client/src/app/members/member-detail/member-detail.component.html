@@ -48,24 +48,10 @@
       <tab heading="Photos">
         <br />
         <carousel>
-          <slide>
+          <slide *ngFor="let photo of member.photos">
             <img
-              src="{{ member.photoURL }}"
-              alt="first slide"
-              style="display: block; width: 100%"
-            />
-          </slide>
-          <slide>
-            <img
-              src="{{ member.photoURL }}"
-              alt="second slide"
-              style="display: block; width: 100%"
-            />
-          </slide>
-          <slide>
-            <img
-              src="{{ member.photoURL }}"
-              alt="third slide"
+              src="{{ photo.url }}"
+              alt="{{ photo.id }}"
               style="display: block; width: 100%"
             />
           </slide>

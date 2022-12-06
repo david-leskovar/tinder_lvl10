@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, delay, Subject, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Member } from '../models/member';
+import { MembersService } from './members.service';
 
 export interface UserLogin {
   username: string;
@@ -17,11 +19,16 @@ export interface User {
 
 @Injectable()
 export class AuthService {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private membersService: MembersService
+  ) {}
 
   baseUrl = environment.apiUrl;
 
   currentUser: User | null = null;
+  currentMember: Member | null = null;
 
   register(user: UserLogin) {
     return this.http.post('https://localhost:5001/api/Accounts/register', user);
@@ -47,20 +54,16 @@ export class AuthService {
   userChanged = new Subject<User | null>();
 
   login(user: UserLogin) {
-    return this.http
-      .post<User>(this.baseUrl + 'Accounts/login', user)
-      .pipe(delay(1500))
-
-      .pipe(
-        tap((resData) => {
-          this.currentUser = {
-            username: resData.username,
-            token: resData.token,
-          };
-          this.userChanged.next(this.currentUser);
-          localStorage.setItem('user', JSON.stringify(this.currentUser));
-        })
-      );
+    return this.http.post<User>(this.baseUrl + 'Accounts/login', user).pipe(
+      tap((resData) => {
+        this.currentUser = {
+          username: resData.username,
+          token: resData.token,
+        };
+        this.userChanged.next(this.currentUser);
+        localStorage.setItem('user', JSON.stringify(this.currentUser));
+      })
+    );
   }
 
   logout() {

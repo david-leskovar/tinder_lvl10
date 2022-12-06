@@ -65,7 +65,9 @@
           >Welcome {{ currentUser.username }}</a
         >
         <div class="dropdown-menu" [ngClass]="{ show: navOpen }">
-          <a class="dropdown-item">Edit profile</a>
+          <a [routerLink]="['member/edit']" class="dropdown-item"
+            >Edit profile</a
+          >
           <a (click)="onLogout()" class="dropdown-item">Log out</a>
         </div>
       </div>
