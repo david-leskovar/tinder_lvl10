@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using API.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tinder_lvl10.Entities
 
@@ -14,7 +15,7 @@ namespace Tinder_lvl10.Entities
 
         public AppUser AppUser { get; set; }
 
-        public Guid AppUserId { get; set; }
+        public int AppUserId { get; set; }
 
       
 
@@ -26,7 +27,7 @@ namespace Tinder_lvl10.Entities
 
     public class AppUser
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public string? Username { get; set; }
 
@@ -55,18 +56,14 @@ namespace Tinder_lvl10.Entities
 
         public ICollection<Photo>? Photos {get;set;}
         
+        public ICollection<UserLike> LikedByUsers { get; set; }
+
+        public ICollection<UserLike> LikedUsers { get; set; }
+
+        public  ICollection<Message> MessagesSent { get; set; }
+
+        public ICollection<Message> MessagesReceived  { get; set; }
         
-        /*public int GetAge() {
-
-            var today = DateTime.Today;
-            var age = today.Year - DateOfBirth.Year;
-            if (DateOfBirth.Date > today.AddYears(-age)) {
-                age--;
-            }
-            return age;
-
-        }
-        */
 
     }
 }

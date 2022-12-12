@@ -30,6 +30,8 @@ import { PreventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.gua
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 @NgModule({
   declarations: [
@@ -60,6 +62,8 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
     TabsModule.forRoot(),
     CarouselModule.forRoot(),
     MatProgressBarModule,
+    PaginationModule.forRoot(),
+    ButtonsModule.forRoot(),
   ],
   providers: [
     AuthService,

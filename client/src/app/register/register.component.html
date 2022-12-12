@@ -13,16 +13,176 @@
 
       <div class="form-floating">
         <input
+          [class.is-invalid]="
+            registerForm.get('username')?.errors &&
+            registerForm.get('username')?.touched
+          "
           type="text"
           formControlName="username"
           name="username"
           class="form-control"
           placeholder="Username"
         />
+        <div
+          *ngIf="registerForm!.get('username')!.hasError('required')"
+          class="invalid-feedback"
+        >
+          Please enter a username
+        </div>
+        <div
+          *ngIf="registerForm!.get('username')!.hasError('minlength')"
+          class="invalid-feedback"
+        >
+          Username is too short
+        </div>
+        <div
+          *ngIf="registerForm!.get('username')!.hasError('maxlength')"
+          class="invalid-feedback"
+        >
+          Username is too long
+        </div>
         <label for="floatingInput">Username</label>
       </div>
+
       <div class="form-floating">
         <input
+          [class.is-invalid]="
+            registerForm.get('country')?.errors &&
+            registerForm.get('country')?.touched
+          "
+          type="text"
+          formControlName="country"
+          name="country"
+          class="form-control"
+          placeholder="Country"
+        />
+        <div
+          *ngIf="registerForm!.get('country')!.hasError('required')"
+          class="invalid-feedback"
+        >
+          Please enter a country
+        </div>
+        <div
+          *ngIf="registerForm!.get('country')!.hasError('minlength')"
+          class="invalid-feedback"
+        >
+          Country too short
+        </div>
+        <div
+          *ngIf="registerForm!.get('country')!.hasError('maxlength')"
+          class="invalid-feedback"
+        >
+          Country too long
+        </div>
+
+        <label for="floatingInput">Country</label>
+      </div>
+
+      <div class="form-floating">
+        <input
+          [class.is-invalid]="
+            registerForm.get('knownAs')?.errors &&
+            registerForm.get('knownAs')?.touched
+          "
+          type="text"
+          formControlName="knownAs"
+          name="knownAs"
+          class="form-control"
+          placeholder="Known as"
+        />
+        <div
+          *ngIf="registerForm!.get('knownAs')!.hasError('required')"
+          class="invalid-feedback"
+        >
+          Please enter a nickname
+        </div>
+        <div
+          *ngIf="registerForm!.get('knownAs')!.hasError('minlength')"
+          class="invalid-feedback"
+        >
+          Known as too short
+        </div>
+        <div
+          *ngIf="registerForm!.get('knownAs')!.hasError('maxlength')"
+          class="invalid-feedback"
+        >
+          Known as too long
+        </div>
+
+        <label for="floatingInput">Known as</label>
+      </div>
+
+      <div class="form-floating">
+        <input
+          [class.is-invalid]="
+            registerForm.get('city')?.errors &&
+            registerForm.get('city')?.touched
+          "
+          type="text"
+          formControlName="city"
+          name="city"
+          class="form-control"
+          placeholder="City"
+        />
+        <div
+          *ngIf="registerForm!.get('city')!.hasError('required')"
+          class="invalid-feedback"
+        >
+          Please enter a city
+        </div>
+        <div
+          *ngIf="registerForm!.get('city')!.hasError('minlength')"
+          class="invalid-feedback"
+        >
+          City too short
+        </div>
+        <div
+          *ngIf="registerForm!.get('city')!.hasError('maxlength')"
+          class="invalid-feedback"
+        >
+          City too long
+        </div>
+
+        <label for="floatingInput">City</label>
+      </div>
+
+      <div class="form-floating">
+        <input
+          type="date"
+          formControlName="dateOfBirth"
+          name="dateOfBirth"
+          class="form-select"
+          id="dateOfBirth"
+          [class.is-invalid]="
+            registerForm.get('dateOfBirth')?.errors &&
+            registerForm.get('dateOfBirth')?.touched
+          "
+        />
+      </div>
+
+      <div class="form-floating">
+        <select
+          formControlName="gender"
+          name="gender"
+          class="form-select"
+          id="country"
+          required=""
+          [class.is-invalid]="
+            registerForm.get('gender')?.errors &&
+            registerForm.get('gender')?.touched
+          "
+        >
+          <option>Male</option>
+          <option>Female</option>
+        </select>
+      </div>
+
+      <div class="form-floating">
+        <input
+          [class.is-invalid]="
+            registerForm.get('password')?.errors &&
+            registerForm.get('password')?.touched
+          "
           formControlName="password"
           name="password"
           type="password"
@@ -30,17 +190,51 @@
           placeholder="Password"
         />
 
+        <div
+          *ngIf="registerForm!.get('password')!.hasError('required')"
+          class="invalid-feedback"
+        >
+          Please enter a password
+        </div>
+        <div
+          *ngIf="registerForm!.get('password')!.hasError('minlength')"
+          class="invalid-feedback"
+        >
+          Password is too short
+        </div>
+        <div
+          *ngIf="registerForm!.get('password')!.hasError('maxlength')"
+          class="invalid-feedback"
+        >
+          Password is too long
+        </div>
+
         <label for="floatingPassword">Password</label>
       </div>
       <div class="form-floating">
         <input
+          [class.is-invalid]="
+            registerForm.get('confirmPassword')?.errors &&
+            registerForm.get('confirmPassword')?.touched
+          "
           formControlName="confirmPassword"
           name="confirmPassword"
           type="password"
           class="form-control"
           placeholder="Confirm Password"
         />
-
+        <div
+          *ngIf="registerForm!.get('confirmPassword')!.hasError('required')"
+          class="invalid-feedback"
+        >
+          Please enter a password
+        </div>
+        <div
+          *ngIf="registerForm!.get('confirmPassword')!.hasError('isMatching')"
+          class="invalid-feedback"
+        >
+          Passwords don't match
+        </div>
         <label for="floatingPassword">Confirm password</label>
       </div>
 
@@ -49,13 +243,14 @@
           <input type="checkbox" value="remember-me" /> Remember me
         </label>
       </div>
-      <button class="w-100 btn btn-lg btn-primary" type="submit">
+      <button
+        [disabled]="!registerForm.valid"
+        class="w-100 btn btn-lg btn-primary"
+        type="submit"
+      >
         Register
       </button>
       <p class="mt-5 mb-3 text-muted">© 2022</p>
     </form>
   </div>
 </div>
-
-<p>Form value:{{ registerForm.value | json }}</p>
-<p>Form status:{{ registerForm.status | json }}</p>

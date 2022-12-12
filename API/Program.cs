@@ -50,9 +50,12 @@ builder.Services.AddCors(opt =>
 
 });
 
+builder.Services.AddScoped<IMessageRepository, IMessageRepository>();
+builder.Services.AddScoped<ILikesRepository, LikesRepository>();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<ITokenService,TokenService>();
+builder.Services.AddScoped<LogUserActivity>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 

@@ -5,7 +5,7 @@ namespace API.DTOs
     public class MemberDTO
     {
 
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public string? Username { get; set; }
 

@@ -11,7 +11,7 @@ import {
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { from } from 'rxjs';
-import { AuthService } from '../Services/auth.service';
+import { AuthService, User, UserRegister } from '../Services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -46,42 +46,46 @@ export class RegisterComponent implements OnInit {
         Validators.required,
         this.mathValues('password'),
       ]),
+      gender: new FormControl('Male', Validators.required),
+      city: new FormControl('', [
+        Validators.minLength(3),
+        Validators.maxLength(20),
+        Validators.required,
+      ]),
+      knownAs: new FormControl('', [
+        Validators.minLength(5),
+        Validators.maxLength(15),
+        Validators.required,
+      ]),
+      country: new FormControl('', [
+        Validators.minLength(5),
+        Validators.maxLength(15),
+        Validators.required,
+      ]),
+      dateOfBirth: new FormControl('', Validators.required),
     });
   }
 
   onSubmit() {
-    console.log(this.registerForm);
-    /*this.loading = true;
-    let username = form.value.username;
-    let password = form.value.password;
-    this.authService
-      .register({
-        username: form.value.username,
-        password: form.value.password,
-      })
-      .subscribe(
-        (data) => {
-          console.log(data);
-          this.authService
-            .login({
-              username: username,
-              password: password,
-            })
-            .subscribe(() => {
-              console.log('ka daj');
+    let user: UserRegister = {
+      username: this.registerForm!.get('username')!.value,
+      password: this.registerForm!.get('password')?.value,
+      knownAs: this.registerForm.get('knownAs')?.value,
+      gender: this.registerForm.get('gender')?.value,
+      city: this.registerForm.get('city')?.value,
+      country: this.registerForm.get('country')?.value,
+      dateOfBirth: this.registerForm.get('dateOfBirth')?.value,
+    };
 
-              this.loading = false;
-              this.router.navigate(['']);
-            });
-        },
-        (error) => {
-          console.log(error);
-
-          this.toastr.error('Hello bozo, there was an error!');
-          this.loading = false;
-        }
-      );
-      */
+    this.authService.register(user).subscribe(
+      (data) => {
+        this.toastr.success('Succesful register');
+        this.router.navigate(['']);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   mathValues(matchTo: any): ValidatorFn {

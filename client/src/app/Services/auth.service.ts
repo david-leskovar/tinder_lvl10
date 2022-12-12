@@ -12,9 +12,22 @@ export interface UserLogin {
   password: string;
 }
 
+export interface UserRegister {
+  username: string;
+  password: string;
+  knownAs: string;
+  gender: string;
+  dateOfBirth: Date;
+  city: string;
+  country: string;
+}
+
 export interface User {
   username: string;
   token: string;
+  photoURL?: string;
+  knownAs?: string;
+  gender?: string;
 }
 
 @Injectable()
@@ -30,14 +43,15 @@ export class AuthService {
   currentUser: User | null = null;
   currentMember: Member | null = null;
 
-  register(user: UserLogin) {
-    return this.http.post('https://localhost:5001/api/Accounts/register', user);
+  register(user: UserRegister) {
+    return this.http.post(this.baseUrl + 'accounts/register', user);
   }
 
   onAutoLogin() {
     const userData: {
       username: string;
       token: string;
+      gender: string;
     } = JSON.parse(localStorage.getItem('user')!);
     if (!userData) {
       return;
@@ -45,6 +59,7 @@ export class AuthService {
     const loadedUser: User = {
       username: userData.username,
       token: userData.token,
+      gender: userData.gender,
     };
 
     this.currentUser = loadedUser;
@@ -59,6 +74,7 @@ export class AuthService {
         this.currentUser = {
           username: resData.username,
           token: resData.token,
+          gender: resData.gender,
         };
         this.userChanged.next(this.currentUser);
         localStorage.setItem('user', JSON.stringify(this.currentUser));

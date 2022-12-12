@@ -36,6 +36,10 @@ export class MemberEditComponent implements OnInit {
   }
 
   reloadMember(photo: Photo) {
+    if (!this.member?.photoURL) {
+      this.member!.photoURL = photo.url;
+    }
+
     this.member?.photos.push(photo);
   }
 

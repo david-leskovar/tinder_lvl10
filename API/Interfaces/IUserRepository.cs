@@ -1,4 +1,5 @@
 ﻿using API.DTOs;
+using API.Helpers;
 using Tinder_lvl10.Entities;
 
 namespace API.Interfaces
@@ -11,13 +12,13 @@ namespace API.Interfaces
 
         Task<IEnumerable<AppUser>> GetUsersAsync();
 
-        Task<AppUser> GetUserByIdAsync(Guid id);
+        Task<AppUser> GetUserByIdAsync(int id);
 
         Task<AppUser> GetUserByUsernameAsync(string username);
 
         Task<MemberDTO> GetMemberAsync(string username);
 
-        Task<IEnumerable<MemberDTO>> GetMembersAsync();
+        Task<PagedList<MemberDTO>> GetMembersAsync(UserParams userParams);
 
 
     }

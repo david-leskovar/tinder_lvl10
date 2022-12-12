@@ -1,6 +1,7 @@
 ﻿using API.Controllers;
 using API.DTOs;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -104,14 +105,37 @@ namespace Tinder_lvl10.Controllers
         }
 
 
-       
 
 
+        [AllowAnonymous]
 
         [HttpGet]
         
 
-        public async Task<ActionResult<IEnumerable<MemberDTO>>> GetUsers() {
+        public async Task<ActionResult<IEnumerable<MemberDTO>>> GetUsers([FromQuery]UserParams userParams) {
+
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername()); 
+
+
+            //var user = await _userRepository.GetMemberAsync(User.GetUsername());
+            if (user == null) {
+                return BadRequest("Please try logging in again!");
+               
+            }
+
+
+            userParams.CurrentUsername = user.Username;
+            if (string.IsNullOrEmpty(userParams.Gender)) {
+
+               
+
+                var usergender = user.Gender.ToLower();
+
+                Console.WriteLine("User gender is " +usergender );
+
+                userParams.Gender = usergender == "male" ? "female" : "male";
+                Console.WriteLine("The  selected gender is: "+userParams.Gender);
+            }
 
             /*Prva verzija
             var users = await _userRepository.GetUsersAsync();
@@ -120,7 +144,13 @@ namespace Tinder_lvl10.Controllers
             return Ok(usersToReturn);
         
             */
-            var users = await _userRepository.GetMembersAsync();
+
+
+            var users = await _userRepository.GetMembersAsync(userParams);
+
+            Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.Totalcount, users.TotalPages);
+
+
             return Ok(users);
 
 
