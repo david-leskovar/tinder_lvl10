@@ -45,7 +45,9 @@ namespace API.Data
         }
 
         public void Update(AppUser user)
+
         {
+         
             _context.Entry(user).State = (Microsoft.EntityFrameworkCore.EntityState)EntityState.Modified;
             
         }
@@ -92,8 +94,6 @@ namespace API.Data
             
 
         }
-
-     
 
       
     }

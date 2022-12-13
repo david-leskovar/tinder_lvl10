@@ -3,10 +3,11 @@ using API.Entities;
 using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Tinder_lvl10.Data;
 
-namespace API.Data.Migrations
+namespace API.Data
 {
     public class MessageRepository : IMessageRepository
     {
@@ -36,53 +37,52 @@ namespace API.Data.Migrations
                 .SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<PagedList<MessageDTO>> GetMessagesForUser()
+        public async Task<PagedList<MessageDTO>> GetMessagesForUser(MessageParams messageParams)
         {
             var query = _context.Messages
                 .OrderByDescending(m => m.MessageSent)
                 .AsQueryable();
 
-            /*
+            
 
             query = messageParams.Container switch
             {
-                "Inbox" => query.Where(u => u.Recipient.UserName == messageParams.Username
-                    && u.RecipientDeleted == false),
-                "Outbox" => query.Where(u => u.Sender.UserName == messageParams.Username
+                "Inbox" => query.Where(u => u.Recipient.Username == messageParams.Username
+                    && u.RecpientDeleted == false),
+                "Outbox" => query.Where(u => u.Sender.Username == messageParams.Username
                     && u.SenderDeleted == false),
-                _ => query.Where(u => u.Recipient.UserName ==
-                    messageParams.Username && u.RecipientDeleted == false && u.DateRead == null)
+                _ => query.Where(u => u.Recipient.Username ==
+                    messageParams.Username && u.RecpientDeleted == false && u.DateRead == null)
             };
 
-            var messages = query.ProjectTo<MessageDto>(_mapper.ConfigurationProvider);
+            var messages = query.ProjectTo<MessageDTO>(_mapper.ConfigurationProvider);
 
-            return await PagedList<MessageDto>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
+            return await PagedList<MessageDTO>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
+            
 
-            */
-
-            throw new NotImplementedException();
+            
 
         }
 
-       
+
 
         public async Task<IEnumerable<MessageDTO>> GetMessageThread(string currentUsername,
             string recipientUsername)
         {
-            /*
+            
             var messages = await _context.Messages
                 .Include(u => u.Sender).ThenInclude(p => p.Photos)
                 .Include(u => u.Recipient).ThenInclude(p => p.Photos)
-                .Where(m => m.Recipient.UserName == currentUsername && m.RecipientDeleted == false
-                        && m.Sender.UserName == recipientUsername
-                        || m.Recipient.UserName == recipientUsername
-                        && m.Sender.UserName == currentUsername && m.SenderDeleted == false
+                .Where(m => m.Recipient.Username == currentUsername && m.RecpientDeleted == false
+                        && m.Sender.Username == recipientUsername
+                        || m.Recipient.Username == recipientUsername
+                        && m.Sender.Username == currentUsername && m.SenderDeleted == false
                 )
                 .OrderBy(m => m.MessageSent)
                 .ToListAsync();
 
             var unreadMessages = messages.Where(m => m.DateRead == null
-                && m.Recipient.UserName == currentUsername).ToList();
+                && m.Recipient.Username == currentUsername).ToList();
 
             if (unreadMessages.Any())
             {
@@ -94,17 +94,14 @@ namespace API.Data.Migrations
                 await _context.SaveChangesAsync();
             }
 
-            return _mapper.Map<IEnumerable<MessageDto>>(messages);
+            return _mapper.Map<IEnumerable<MessageDTO>>(messages);
 
-            */
+            
 
-            throw new NotImplementedException();
+            
         }
 
-        public Task<IEnumerable<MessageDTO>> GetMessageThread(int currentUserId, int recipient)
-        {
-            throw new NotImplementedException();
-        }
+ 
 
         public async Task<bool> SaveAllAsync()
         {

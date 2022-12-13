@@ -32,6 +32,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { MessageService } from './Services/message.service';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
     MemberCardComponent,
     MemberEditComponent,
     PhotoEditorComponent,
+    MemberMessagesComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,6 +72,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
     AuthService,
     AuthGuard,
     PreventUnsavedChangesGuard,
+    MessageService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },

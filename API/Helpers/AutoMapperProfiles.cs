@@ -1,4 +1,5 @@
 ﻿using API.DTOs;
+using API.Entities;
 using API.Extensions;
 using AutoMapper;
 using Tinder_lvl10.Entities;
@@ -16,6 +17,12 @@ namespace API.Helpers
             CreateMap<MemberUpdateDto, AppUser>();
 
             CreateMap<RegisterDTO, AppUser>();
+
+            CreateMap<Message, MessageDTO>()
+               .ForMember(dest => dest.SenderPhotoURL, opt => opt.MapFrom(src =>
+                   src.Sender.Photos.FirstOrDefault(x => x.IsMain).Url))
+               .ForMember(dest => dest.RecipientPhotoURL, opt => opt.MapFrom(src =>
+                   src.Recipient.Photos.FirstOrDefault(x => x.IsMain).Url));
 
         }
 

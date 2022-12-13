@@ -1,6 +1,6 @@
 ﻿namespace API.DTOs
 {
-    public interface MessageDTO
+    public class MessageDTO
     {
 
         public int Id { get; set; }
@@ -8,14 +8,14 @@
 
         public string SenderUsername { get; set; }
 
-        public string SenderPhotoURL { get; set; }
+        public string? SenderPhotoURL { get; set; }
       
 
         public int RecipientId { get; set; }
 
         public string RecipientUsername { get; set; }
 
-        public string RecipientPhotoURL { get; set; }
+        public string? RecipientPhotoURL { get; set; }
 
         public string Content { get; set; }
 

@@ -29,7 +29,7 @@ namespace API.Controllers
         public ActionResult<AppUser> GetNotFound()
         {
 
-            var thing = _context.Users.Find(Guid.NewGuid());
+            var thing = _context.Users.Find(-1);
             ModelState.AddModelError("notFound", "User you are trying to get was not found");
 
             if (thing == null) return NotFound(ModelState);

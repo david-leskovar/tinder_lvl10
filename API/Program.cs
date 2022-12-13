@@ -1,4 +1,4 @@
- using Tinder_lvl10.Data;
+using Tinder_lvl10.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using API.Services;
@@ -50,7 +50,7 @@ builder.Services.AddCors(opt =>
 
 });
 
-builder.Services.AddScoped<IMessageRepository, IMessageRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<ILikesRepository, LikesRepository>();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddScoped<IPhotoService, PhotoService>();

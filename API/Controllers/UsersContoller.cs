@@ -176,13 +176,20 @@ namespace Tinder_lvl10.Controllers
 
         public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDTO) {
 
-            
 
-            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var username = User.GetUsername();
+
 
             var user = await _userRepository.GetUserByUsernameAsync(username);
 
-            _mapper.Map(memberUpdateDTO, user);
+            
+
+            user.Introduction = memberUpdateDTO.Introduction;
+            user.LookingFor = memberUpdateDTO.LookingFor;
+            user.Interests = memberUpdateDTO.Interests;
+            user.City = memberUpdateDTO.City;
+            user.Country = memberUpdateDTO.Country;
+
 
             _userRepository.Update(user);
 

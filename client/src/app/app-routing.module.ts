@@ -12,6 +12,7 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MessagesComponent } from './messages/messages.component';
 import { RegisterComponent } from './register/register.component';
+import { MemberDetailedResolver } from './resolvers/member-detailed.resolver';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -27,6 +28,7 @@ const routes: Routes = [
     path: 'members/:username',
     component: MemberDetailComponent,
     canActivate: [AuthGuard],
+    resolve: { member: MemberDetailedResolver },
   },
   { path: 'lists', component: ListsComponent, canActivate: [AuthGuard] },
   { path: 'messages', component: MessagesComponent, canActivate: [AuthGuard] },
