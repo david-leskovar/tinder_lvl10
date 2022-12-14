@@ -9,6 +9,9 @@ using System.Text;
 using Middleware.Example;
 using API.Data;
 using API.Helpers;
+using Tinder_lvl10.Entities;
+using API.Entities;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +37,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 
 
+builder.Services.AddAuthorization(options =>
+{
+
+    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("ModeratorPhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
+
+});
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -49,6 +60,17 @@ builder.Services.AddCors(opt =>
     });
 
 });
+
+
+builder.Services.AddIdentityCore<AppUser>(opt =>
+{
+
+    opt.Password.RequireNonAlphanumeric = false;
+
+
+}).AddRoles<AppRole>().AddRoleManager<RoleManager<AppRole>>().AddSignInManager<SignInManager<AppUser>>().AddRoleValidator<RoleValidator<AppRole>>()
+                      .AddEntityFrameworkStores<DataContext>();
+
 
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<ILikesRepository, LikesRepository>();

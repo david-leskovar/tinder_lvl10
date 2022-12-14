@@ -15,6 +15,7 @@ namespace API.Data
     {
         public static async Task SeedUsers(DataContext context)
         {
+            /*
             if (await context.Users.AnyAsync()) return;
 
             var userData = await System.IO.File.ReadAllTextAsync("Data/UserSeedData.json");
@@ -30,6 +31,7 @@ namespace API.Data
 
                 await context.Users.AddAsync(user);
             }
+            */
 
             await context.SaveChangesAsync();
         }

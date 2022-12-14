@@ -31,7 +31,7 @@ namespace API.Data
             var cleanName = predicate.Trim();
 
 
-            var users = _context.Users.OrderBy(u => u.Username).AsQueryable();
+            var users = _context.Users.OrderBy(u => u.UserName).AsQueryable();
             var likes = _context.Likes.AsQueryable();
 
 
@@ -55,7 +55,7 @@ namespace API.Data
 
             return await users.Select(user => new LikeDTO {
             
-                Username=user.Username,
+                Username=user.UserName,
                 KnownAs=user.KnownAs,
                 Age = user.DateOfBirth.CalculateAge(),
                 PhotoURL = user.Photos.FirstOrDefault(p=>p.IsMain).Url,

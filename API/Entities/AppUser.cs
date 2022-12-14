@@ -1,4 +1,5 @@
 ﻿using API.Entities;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tinder_lvl10.Entities
@@ -66,15 +67,9 @@ namespace Tinder_lvl10.Entities
     
 
 
-    public class AppUser
+    public class AppUser : IdentityUser<int>
     {
-        public int Id { get; set; }
-
-        public string Username { get; set; }
-
-        public byte[]? PasswordHash { get; set; }
-
-        public byte[]? PasswordSalt { get; set; }
+       
 
         public DateTime DateOfBirth { get; set; }
 
@@ -104,7 +99,9 @@ namespace Tinder_lvl10.Entities
         public  ICollection<Message>? MessagesSent { get; set; }
 
         public ICollection<Message>? MessagesReceived  { get; set; }
-        
+
+        public ICollection<AppUserRole> UserRoles { get; set; }
+
 
     }
 }

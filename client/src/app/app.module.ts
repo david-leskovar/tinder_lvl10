@@ -34,6 +34,11 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { MessageService } from './Services/message.service';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { UserManagmentComponent } from './admin/user-managment/user-managment.component';
+import { PhotoManagmentComponent } from './admin/photo-managment/photo-managment.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +57,10 @@ import { MemberMessagesComponent } from './members/member-messages/member-messag
     MemberEditComponent,
     PhotoEditorComponent,
     MemberMessagesComponent,
+    AdminPanelComponent,
+    UserManagmentComponent,
+    PhotoManagmentComponent,
+    RolesModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,6 +76,7 @@ import { MemberMessagesComponent } from './members/member-messages/member-messag
     MatProgressBarModule,
     PaginationModule.forRoot(),
     ButtonsModule.forRoot(),
+    ModalModule.forRoot(),
   ],
   providers: [
     AuthService,

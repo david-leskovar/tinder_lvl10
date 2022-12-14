@@ -77,6 +77,12 @@ export class NavComponent implements OnInit {
     this.currentUser = this.authService.currentUser;
     this.authService.userChanged.subscribe((user: User | null) => {
       this.currentUser = user;
+      this.printUser();
     });
+  }
+
+  printUser() {
+    console.log('my man');
+    console.log(this.currentUser);
   }
 }

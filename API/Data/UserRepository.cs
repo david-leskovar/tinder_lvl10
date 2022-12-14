@@ -28,7 +28,7 @@ namespace API.Data
 
         public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
-            return await _context.Users.Include(p=>p.Photos).SingleOrDefaultAsync(x => x.Username == username);
+            return await _context.Users.Include(p=>p.Photos).SingleOrDefaultAsync(x => x.UserName == username);
         }
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
@@ -54,7 +54,7 @@ namespace API.Data
 
         public async Task<MemberDTO> GetMemberAsync(string username)
         {
-            return await _context.Users.Where(x => x.Username == username).ProjectTo<MemberDTO>(mapper.ConfigurationProvider).SingleOrDefaultAsync();
+            return await _context.Users.Where(x => x.UserName == username).ProjectTo<MemberDTO>(mapper.ConfigurationProvider).SingleOrDefaultAsync();
         }
 
         public async Task<PagedList<MemberDTO>> GetMembersAsync(UserParams userParams)
@@ -62,7 +62,7 @@ namespace API.Data
             var query = _context.Users.AsQueryable();
 
 
-            query = query.Where(u => u.Username != userParams.CurrentUsername);
+            query = query.Where(u => u.UserName != userParams.CurrentUsername);
             query = query.Where(u => u.Gender.ToLower() == userParams.Gender.ToLower());
 
             var minDob = DateTime.Today.AddYears(-userParams.MaxAge-1);
@@ -78,7 +78,7 @@ namespace API.Data
             {
 
                 "created" => query.OrderByDescending(u => u.LastActive),
-                _ => query.OrderBy(u => u.Username)
+                _ => query.OrderBy(u => u.UserName)
 
             };
 

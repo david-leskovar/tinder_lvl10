@@ -1,7 +1,9 @@
 ﻿using API.DTOs;
+using API.Entities;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -18,37 +20,43 @@ namespace API.Controllers
 
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
-        public AccountsController(DataContext context,ITokenService tokenService,IMapper mapper) : base(context)
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly RoleManager<AppRole> _roleManager;
+        public AccountsController(DataContext context, ITokenService tokenService, SignInManager<AppUser> signInManager, IMapper mapper, UserManager<AppUser> userManager,RoleManager<AppRole> roleManager) : base(context)
         {
             this._tokenService = tokenService;
             this._mapper = mapper;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
+            this._roleManager = roleManager;
         }
 
         [HttpPost("login")]
-        
+
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginRequest) {
 
-            if (!ModelState.IsValid) { 
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
 
-           
 
-            
-            var user = await _context.Users.SingleOrDefaultAsync(x=>x.Username==loginRequest.Username);
+
+
+            var user = await _userManager.Users.SingleOrDefaultAsync(x => x.UserName == loginRequest.Username);
             if (user == null) {
                 return BadRequest("Invalid username");
             }
 
-            using var hmac = new HMACSHA512(user.PasswordSalt);
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginRequest.password, false);
 
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginRequest.password));
+            if (!result.Succeeded) return Unauthorized();
 
-            for (int i = 0; i < computedHash.Length; i++) {
-                if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
-            }
 
-            return new UserDTO { Username = user.Username, Token = _tokenService.CreateToken(user),KnownAs=user.KnownAs,Gender=user.Gender };
+
+
+
+            return new UserDTO { Username = user.UserName, Token = await _tokenService.CreateToken(user), KnownAs = user.KnownAs, Gender = user.Gender };
 
 
 
@@ -59,7 +67,7 @@ namespace API.Controllers
 
 
         [HttpPost("register")]
-   
+
         public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerRequest) {
 
 
@@ -82,38 +90,89 @@ namespace API.Controllers
 
 
 
-            using var hmac = new HMACSHA512();
+
 
 
             user.Id = Guid.NewGuid().GetHashCode();
-            user.Username = registerRequest.Username.ToLower();
-            user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerRequest.password));
-            user.PasswordSalt = hmac.Key;
+            user.UserName = registerRequest.Username.ToLower();
 
-            var addedUser = await _context.Users.AddAsync(user);
 
-            if (addedUser != null) {
-                await _context.SaveChangesAsync();
-                return new UserDTO { Username = user.Username, Token = _tokenService.CreateToken(user),KnownAs=user.KnownAs,Gender=user.Gender };
+            var result = await _userManager.CreateAsync(user, registerRequest.password);
+
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+            if(!roleResult.Succeeded ) return BadRequest(roleResult.Errors);    
+
+
+            return new UserDTO { Username = user.UserName, Token = await _tokenService.CreateToken(user), KnownAs = user.KnownAs, Gender = user.Gender };
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+
+        [HttpGet("kadaj")]
+        public async Task<ActionResult> SeedRoles()
+        {
+
+            var roles = new List<AppRole> {
+
+                new AppRole{Name="Member"},
+                new AppRole{Name="Admin"},
+                new AppRole{Name="Moderator"},
+
+            };
+
+
+            try
+            {
+                foreach (var role in roles)
+                {
+
+                    await _roleManager.CreateAsync(role);
+
+
+                }
+
+
+                var admin = new AppUser
+                {
+                    UserName = "admin1"
+                };
+
+                await _userManager.CreateAsync(admin, "Pa$$w0rd");
+                await _userManager.AddToRolesAsync(admin, new[] { "Admin", "Moderator" });  
+
+
+                return Ok();
             }
 
-            return BadRequest();
+            catch (Exception ex) { 
+            
+            
+                return BadRequest(ex.Message);
+            }
 
-           
 
-           
-            
-            
-          
-            
         }
 
         private async Task<bool> UserExists(string username) {
 
-            return await _context.Users.AnyAsync(x => x.Username == username.ToLower());
+            return await _userManager.Users.AnyAsync(x => x.UserName == username.ToLower());
 
         }
 
+
+        
 
     }
 }

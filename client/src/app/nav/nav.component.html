@@ -53,6 +53,18 @@
             >Messages</a
           >
         </li>
+        <li
+          class="nav-item"
+          *ngIf="currentUser && currentUser.roles.includes('Admin')"
+        >
+          <a
+            class="nav-link"
+            [routerLinkActive]="'active'"
+            [routerLink]="['/admin']"
+            href="#"
+            >Admin</a
+          >
+        </li>
       </ul>
 
       <div

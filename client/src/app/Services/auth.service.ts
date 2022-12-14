@@ -28,6 +28,7 @@ export interface User {
   photoURL?: string;
   knownAs?: string;
   gender?: string;
+  roles: string[];
 }
 
 @Injectable()
@@ -56,10 +57,16 @@ export class AuthService {
     if (!userData) {
       return;
     }
+
+    let userRoles = [];
+    const roles = this.getDecodedToken(userData.token).role;
+    Array.isArray(roles) ? (userRoles = roles) : userRoles.push(roles);
+
     const loadedUser: User = {
       username: userData.username,
       token: userData.token,
       gender: userData.gender,
+      roles: userRoles,
     };
 
     this.currentUser = loadedUser;
@@ -71,10 +78,15 @@ export class AuthService {
   login(user: UserLogin) {
     return this.http.post<User>(this.baseUrl + 'Accounts/login', user).pipe(
       tap((resData) => {
+        let userRoles = [];
+        const roles = this.getDecodedToken(resData.token).role;
+        Array.isArray(roles) ? (userRoles = roles) : userRoles.push(roles);
+
         this.currentUser = {
           username: resData.username,
           token: resData.token,
           gender: resData.gender,
+          roles: userRoles,
         };
         this.userChanged.next(this.currentUser);
         localStorage.setItem('user', JSON.stringify(this.currentUser));
@@ -87,5 +99,9 @@ export class AuthService {
     this.currentUser = null;
     this.userChanged.next(null);
     this.router.navigate(['/register']);
+  }
+
+  getDecodedToken(token: string) {
+    return JSON.parse(atob(token.split('.')[1]));
   }
 }

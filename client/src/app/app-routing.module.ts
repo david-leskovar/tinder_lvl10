@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { ErrorsComponent } from './errors/errors.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServererrorComponent } from './errors/servererror/servererror.component';
+import { AdminGuard } from './guards/admin.guard';
 import { AuthGuard } from './guards/auth.guard';
 import { PreventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.guard';
 import { HomeComponent } from './home/home.component';
@@ -23,6 +25,11 @@ const routes: Routes = [
     component: MemberEditComponent,
     canActivate: [AuthGuard],
     canDeactivate: [PreventUnsavedChangesGuard],
+  },
+  {
+    path: 'admin',
+    component: AdminPanelComponent,
+    canActivate: [AuthGuard, AdminGuard],
   },
   {
     path: 'members/:username',

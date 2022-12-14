@@ -35,14 +35,14 @@ namespace Tinder_lvl10.Controllers
 
         public async Task<ActionResult> SeedUsers()
         {
-
+            /*
             
 
             using var hmac = new HMACSHA512();
 
             var user1 = new AppUser
             {
-                Username = "Maia",
+                UserName = "Maia",
                 Gender = "Female",
                 DateOfBirth = DateTime.Parse("1956-07-22"),
                 KnownAs = "Maia",
@@ -60,7 +60,7 @@ namespace Tinder_lvl10.Controllers
 
             var user2 = new AppUser
             {
-                Username = "Mia",
+                UserName = "Mia",
                 Gender = "Female",
                 DateOfBirth = DateTime.Parse("1995-10-12"),
                 KnownAs = "Mia",
@@ -78,7 +78,7 @@ namespace Tinder_lvl10.Controllers
 
             var user3 = new AppUser
             {
-                Username = "Marko",
+                UserName = "Marko",
                 Gender = "Male",
                 DateOfBirth = DateTime.Parse("1992-03-12"),
                 KnownAs = "Marko",
@@ -99,16 +99,14 @@ namespace Tinder_lvl10.Controllers
             _context.Users.Add(user3);
 
             _context.SaveChanges();
-
+            */
 
             return Ok("Done");
         }
 
 
 
-
-        [AllowAnonymous]
-
+        [Authorize]
         [HttpGet]
         
 
@@ -124,7 +122,7 @@ namespace Tinder_lvl10.Controllers
             }
 
 
-            userParams.CurrentUsername = user.Username;
+            userParams.CurrentUsername = user.UserName;
             if (string.IsNullOrEmpty(userParams.Gender)) {
 
                
@@ -226,7 +224,7 @@ namespace Tinder_lvl10.Controllers
 
             if (await _userRepository.SaveAllAsync()) {
                 
-                return CreatedAtRoute("GetUser",new { UserName=user.Username} ,_mapper.Map<PhotoDTO>(photo));
+                return CreatedAtRoute("GetUser",new { UserName=user.UserName} ,_mapper.Map<PhotoDTO>(photo));
                
 
             }
