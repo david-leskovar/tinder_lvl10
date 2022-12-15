@@ -6,6 +6,7 @@ import { catchError, delay, Subject, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Member } from '../models/member';
 import { MembersService } from './members.service';
+import { PresenceService } from './presence.service';
 
 export interface UserLogin {
   username: string;
@@ -36,7 +37,8 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private membersService: MembersService
+    private membersService: MembersService,
+    private presence: PresenceService
   ) {}
 
   baseUrl = environment.apiUrl;
@@ -89,6 +91,9 @@ export class AuthService {
           roles: userRoles,
         };
         this.userChanged.next(this.currentUser);
+
+        this.presence.createHubConnection(this.currentUser);
+
         localStorage.setItem('user', JSON.stringify(this.currentUser));
       })
     );
@@ -99,6 +104,7 @@ export class AuthService {
     this.currentUser = null;
     this.userChanged.next(null);
     this.router.navigate(['/register']);
+    this.presence.stopHubConnection();
   }
 
   getDecodedToken(token: string) {

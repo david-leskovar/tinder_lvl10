@@ -4,6 +4,7 @@ import { AuthService } from './Services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressBarMode } from '@angular/material/progress-bar';
+import { PresenceService } from './Services/presence.service';
 
 @Component({
   selector: 'app-root',
@@ -11,10 +12,18 @@ import { ProgressBarMode } from '@angular/material/progress-bar';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private presence: PresenceService
+  ) {}
 
   ngOnInit() {
     this.authService.onAutoLogin();
+
+    if (this.authService.currentUser) {
+      this.presence.createHubConnection(this.authService.currentUser);
+    }
   }
 
   title = 'client';

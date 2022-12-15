@@ -17,3 +17,8 @@
 .rounded-circle {
   max-height: 50px;
 }
+
+.scrollab {
+  height: 600px;
+  overflow-y: scroll;
+}

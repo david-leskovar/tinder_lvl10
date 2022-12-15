@@ -12,6 +12,7 @@ using API.Helpers;
 using Tinder_lvl10.Entities;
 using API.Entities;
 using Microsoft.AspNetCore.Identity;
+using API.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey"])),
         ValidateIssuer = false,
         ValidateAudience = false,
+    };
+
+    options.Events = new JwtBearerEvents()
+    {
+
+        OnMessageReceived = context =>
+        {
+
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
+            {
+
+                context.Token = accessToken;
+
+            }
+
+            return Task.CompletedTask;
+
+        }
+
     };
 
 });
@@ -55,7 +78,7 @@ builder.Services.AddCors(opt =>
     opt.AddPolicy("CorsPolicy", policy =>
     {
 
-        policy.AllowAnyMethod().AllowAnyHeader().AllowCredentials().WithOrigins("http://localhost:4200");
+        policy.AllowAnyMethod().AllowCredentials().AllowAnyHeader().AllowCredentials().WithOrigins("http://localhost:4200");
 
     });
 
@@ -72,6 +95,8 @@ builder.Services.AddIdentityCore<AppUser>(opt =>
                       .AddEntityFrameworkStores<DataContext>();
 
 
+builder.Services.AddSingleton<PresenceTracker>();
+builder.Services.AddSignalR();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<ILikesRepository, LikesRepository>();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
@@ -118,6 +143,8 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers().RequireAuthorization();
+    endpoints.MapHub<PresenceHub>("hubs/presence");
+    endpoints.MapHub<MessageHub>("hubs/message");
 });
 
 
