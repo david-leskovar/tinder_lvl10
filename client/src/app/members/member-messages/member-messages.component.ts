@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Message } from 'src/app/models/message';
 import { MessageService } from 'src/app/Services/message.service';
 
 @Component({
@@ -10,7 +9,6 @@ import { MessageService } from 'src/app/Services/message.service';
 })
 export class MemberMessagesComponent implements OnInit {
   @ViewChild('messageForm') messageForm: NgForm;
-  @Input() messages: Message[];
   @Input() username: string;
   messageContent: string;
 

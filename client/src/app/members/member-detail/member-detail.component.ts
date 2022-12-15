@@ -39,11 +39,9 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   }
 
   loadMember() {
-    console.log(this.route.snapshot.paramMap.get('username'));
     this.memberService
       .getMember(this.route.snapshot.paramMap.get('username')!)
       .subscribe((member) => {
-        console.log(member);
         this.member = member;
       });
   }

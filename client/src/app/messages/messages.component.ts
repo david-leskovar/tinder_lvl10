@@ -23,14 +23,21 @@ export class MessagesComponent implements OnInit {
   }
 
   loadMessages() {
-    this.loading = true;
     this.messageService
       .getMessages(this.pageNumber, this.pageSize, this.container)
-      .subscribe((response) => {
-        this.messages = response.results;
-        this.pagination = response.pagination;
-        this.loading = false;
-      });
+      .subscribe(
+        (response) => {
+          console.log(response);
+          console.log(this.loading);
+
+          this.messages = response.results;
+          this.pagination = response.pagination;
+        },
+        (err) => {
+          console.log(err);
+          this.loading = false;
+        }
+      );
   }
 
   deleteMessage(id: number) {

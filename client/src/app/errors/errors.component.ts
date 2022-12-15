@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-errors',
@@ -7,12 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./errors.component.css'],
 })
 export class ErrorsComponent implements OnInit {
+  baseUrl: string = environment.apiUrl;
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {}
 
   onError1() {
-    this.http.get('http://localhost:5000/api/Buggy/auth').subscribe(
+    this.http.get(this.baseUrl + 'Buggy/auth').subscribe(
       (data) => {
         console.log(data);
       },
@@ -22,7 +24,7 @@ export class ErrorsComponent implements OnInit {
     );
   }
   onError2() {
-    this.http.get('http://localhost:5000/api/Buggy/not-found').subscribe(
+    this.http.get(this.baseUrl + 'Buggy/not-found').subscribe(
       (data) => {
         console.log(data);
       },
@@ -32,7 +34,7 @@ export class ErrorsComponent implements OnInit {
     );
   }
   onError3() {
-    this.http.get('http://localhost:5000/api/Buggy/server-error').subscribe(
+    this.http.get(this.baseUrl + 'Buggy/server-error').subscribe(
       (data) => {
         console.log(data);
       },
@@ -42,7 +44,7 @@ export class ErrorsComponent implements OnInit {
     );
   }
   onError4() {
-    this.http.get('http://localhost:5000/api/Buggy/bad-request').subscribe(
+    this.http.get(this.baseUrl + 'Buggy/bad-request').subscribe(
       (data) => {
         console.log(data);
       },

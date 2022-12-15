@@ -49,7 +49,6 @@ export class NavComponent implements OnInit {
   onSubmit(form: NgForm) {
     this.signInLoading = true;
     if (!form.valid) {
-      console.log('not valid!');
       return;
     }
 
@@ -64,11 +63,7 @@ export class NavComponent implements OnInit {
           this.signInLoading = false;
         },
         (error) => {
-          setTimeout(() => {
-            console.log(error);
-            this.toastr.error(error.error);
-            this.signInLoading = false;
-          }, 1500);
+          this.signInLoading = false;
         }
       );
   }
@@ -77,12 +72,6 @@ export class NavComponent implements OnInit {
     this.currentUser = this.authService.currentUser;
     this.authService.userChanged.subscribe((user: User | null) => {
       this.currentUser = user;
-      this.printUser();
     });
-  }
-
-  printUser() {
-    console.log('my man');
-    console.log(this.currentUser);
   }
 }

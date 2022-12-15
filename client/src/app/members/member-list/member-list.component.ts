@@ -25,10 +25,8 @@ export class MemberListComponent implements OnInit {
     private authService: AuthService
   ) {
     this.user = this.authService!.currentUser!;
-    console.log(this.user);
+
     this.userParams = new UserParams(this.user);
-    console.log(this.user);
-    console.log(this.userParams);
   }
 
   ngOnInit(): void {
@@ -41,10 +39,7 @@ export class MemberListComponent implements OnInit {
   }
 
   loadMembers() {
-    console.log(this.userParams);
     this.memberService.getMembers(this.userParams).subscribe((response) => {
-      console.log(response);
-
       this.members = response.results;
       this.pagination = response.pagination;
     });

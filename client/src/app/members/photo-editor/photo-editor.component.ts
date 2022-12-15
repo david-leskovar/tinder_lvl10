@@ -5,6 +5,7 @@ import { HtmlParser } from '@angular/compiler';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { MembersService } from 'src/app/Services/members.service';
+import { environment } from 'src/environments/environment';
 
 class ImageSnippet {
   constructor(public src: string, public file: File) {}
@@ -16,6 +17,7 @@ class ImageSnippet {
   styleUrls: ['./photo-editor.component.css'],
 })
 export class PhotoEditorComponent implements OnInit {
+  baseUrl: string = environment.apiUrl;
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -35,7 +37,7 @@ export class PhotoEditorComponent implements OnInit {
       formData.append('file', this.selectedFile.file);
 
       return this.http
-        .post<Photo>('http://localhost:5000/api/Users/add-photo', formData)
+        .post<Photo>(this.baseUrl + 'Users/add-photo', formData)
         .subscribe((photo: Photo) => {
           this.onReload(photo);
         });

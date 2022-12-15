@@ -32,7 +32,7 @@
                     message.dateRead && message.senderUsername !== username
                   "
                 >
-                  (read {{ message.dateRead }})
+                  (read {{ message.dateRead | dateAgo }})
                 </span>
               </small>
             </div>

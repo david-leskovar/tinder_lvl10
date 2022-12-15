@@ -39,6 +39,7 @@ import { UserManagmentComponent } from './admin/user-managment/user-managment.co
 import { PhotoManagmentComponent } from './admin/photo-managment/photo-managment.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
+import { DateAgoPipe } from './pipes/date-ago.pipe';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { RolesModalComponent } from './modals/roles-modal/roles-modal.component'
     UserManagmentComponent,
     PhotoManagmentComponent,
     RolesModalComponent,
+    DateAgoPipe,
   ],
   imports: [
     BrowserModule,

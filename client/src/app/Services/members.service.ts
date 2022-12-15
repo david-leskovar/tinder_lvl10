@@ -26,7 +26,6 @@ export class MembersService {
   }
 
   getMembers(userParams: UserParams) {
-    console.log(userParams);
     let params = this.getPaginationHeaders(
       userParams.pageNumber,
       userParams.pageSize

@@ -1,50 +1,40 @@
-﻿using API.Extensions;
+﻿using System;
+using System.Threading.Tasks;
+using API.Extensions;
+using API.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Tinder_lvl10.Entities;
 
 namespace API.SignalR
 {
-
     [Authorize]
     public class PresenceHub : Hub
     {
-
         private readonly PresenceTracker _tracker;
-        public PresenceHub(PresenceTracker tracker) {
-
-            this._tracker = tracker;
+        public PresenceHub(PresenceTracker tracker)
+        {
+            _tracker = tracker;
         }
 
-        public override async Task OnConnectedAsync() {
-
-
-            _tracker.UserConnected(Context.User.GetUsername(), Context.ConnectionId);
-            await Clients.Others.SendAsync("UserIsOnline", Context.User.GetUsername());
+        public override async Task OnConnectedAsync()
+        {
+            var isOnline = await _tracker.UserConnected(Context.User.GetUsername(), Context.ConnectionId);
+            if (isOnline)
+                await Clients.Others.SendAsync("UserIsOnline", Context.User.GetUsername());
 
             var currentUsers = await _tracker.GetOnlineUsers();
-            await Clients.All.SendAsync("GetOnlineUsers",currentUsers);
-           
-
-        
+            await Clients.Caller.SendAsync("GetOnlineUsers", currentUsers);
         }
 
-        public override async Task OnDisconnectedAsync(Exception ex) {
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            var isOffline = await _tracker.UserDisconnected(Context.User.GetUsername(), Context.ConnectionId);
 
-            await _tracker.UserDisconnected(Context.User.GetUsername(), Context.ConnectionId);
-            await Clients.Others.SendAsync("UserIsOffline", Context.User.GetUsername());
+            if (isOffline)
+                await Clients.Others.SendAsync("UserIsOffline", Context.User.GetUsername());
 
-            var currentUsers = await _tracker.GetOnlineUsers();
-            await Clients.All.SendAsync("GetOnlineUsers", currentUsers);
-
-
-            await base.OnDisconnectedAsync(ex);
-
-           
-
-        
+            await base.OnDisconnectedAsync(exception);
         }
-       
-
     }
 }
