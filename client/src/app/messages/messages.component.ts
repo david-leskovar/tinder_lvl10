@@ -23,13 +23,11 @@ export class MessagesComponent implements OnInit {
   }
 
   loadMessages() {
+    this.messages = [];
     this.messageService
       .getMessages(this.pageNumber, this.pageSize, this.container)
       .subscribe(
         (response) => {
-          console.log(response);
-          console.log(this.loading);
-
           this.messages = response.results;
           this.pagination = response.pagination;
         },

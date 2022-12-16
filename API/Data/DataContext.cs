@@ -16,12 +16,14 @@ namespace Tinder_lvl10.Data
         public DataContext(DbContextOptions options,IConfiguration config) : base(options) {
 
             this._config = config;
+            
 
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite(_config.GetConnectionString("DefaultConnection"));
+         
         }
 
         

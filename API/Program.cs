@@ -128,23 +128,31 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<RequestCultureMiddleware>();
 
-app.UseHttpsRedirection();
-
 
 app.UseRouting();
 
 app.UseCors("CorsPolicy");
 
-
 app.UseAuthentication();
 
 app.UseAuthorization();
 
+
+
+app.UseHttpsRedirection();
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseEndpoints(endpoints =>
 {
+    
     endpoints.MapControllers().RequireAuthorization();
     endpoints.MapHub<PresenceHub>("hubs/presence");
     endpoints.MapHub<MessageHub>("hubs/message");
+
+    endpoints.MapFallbackToController("Index", "Fallback");
+
 });
 
 
